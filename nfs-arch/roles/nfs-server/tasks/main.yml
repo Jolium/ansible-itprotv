@@ -1,0 +1,31 @@
+---
+
+- name: "install server packages"
+  apt:
+    name: nfs-kernel-server
+    state: present
+
+- name: "start the nfs-kernel-server"
+  service:
+    name: nfs-kernel-server
+    state: started
+
+- name: "enable the nfs-kernel-server"
+  service:
+    name: nfs-kernel-server
+    enabled: yes
+
+- name: "create the /share directory"
+  file:
+    path: "/share"
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: 0777
+
+- name: "add clients to the exports files"
+  template:
+    src: ./exports.j2
+    dest: /etc/exports
+  notify:
+    - "restart nfs server"

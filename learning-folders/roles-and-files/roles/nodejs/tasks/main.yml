@@ -1,0 +1,12 @@
+---
+
+#- name: "double check the node version is set"
+#  fail:
+#    msg: "Please the node version variable"
+#  when: "node_version == ''"
+
+- include_tasks: "debian.yml"
+  when: "ansible_os_family == 'Debian'"
+- include_tasks: "redhat.yml"
+  when: "ansible_os_family == 'RedHat'"
+

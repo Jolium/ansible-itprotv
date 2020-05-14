@@ -1,0 +1,43 @@
+---
+
+- hosts: devmachines
+  become: yes
+  remote_user: joao
+  tasks:
+
+- hosts: web-developers
+  become: yes
+  remote_user: joao
+  vars:
+    users:
+      - username: "filipe"
+        shell: "/bin/zsh"
+      - username: "silva"
+        shell: "/bin/bash"
+  tasks:
+    - name: "set up the nodejs key"
+      apt_key:
+        url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+        state: present
+    - name: "set up the nodejs repository"
+      apt_repository:
+        repo: "deb https://deb.nodesourse.com/node_8.x focal main"
+        state: present
+    - name: "install nodejs setup"
+      apt:
+        name: nodejs
+        state: latest
+    - name: "set up users"
+      user:
+        name: "{{ item.username }}"
+        groups:
+          - developers
+        shell: "{{ item.shell }}"
+      with_items: "{{ users }}"
+    - name: "make a code directory"
+      file:
+        path: "/home/{{ item.username }}/code"
+        state: directory
+        owner: "{{ item.username }}"
+        group: "{{ item.username }}"
+      with_items: "{{ users }}"

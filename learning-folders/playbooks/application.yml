@@ -1,0 +1,15 @@
+--- # Setting up the application
+
+#- hosts: local
+#  become: yes
+#  remote_user: joao
+#  tasks:
+#    - name: "install nginx"
+
+- hosts: webserver
+  become: yes
+
+- hosts: dbserver
+  become: yes
+  gather_facts: no
+    

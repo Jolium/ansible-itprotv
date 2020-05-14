@@ -1,0 +1,37 @@
+---
+
+- hosts: webserver
+  
+#  vars:
+#    home: "/home/joao"
+#    picture_folder: "/home/joao/pictures"
+#  vars_files:
+#    - ./statics.yml   
+
+  vars_prompt:
+    - name: "home"
+      prompt: "Where is the home directory?"
+      private: no
+    - name: "picture_folder"
+      prompt: "Where should be the picture br stored?"
+      private: no
+    - name: "password"
+      prompt: "What is the password?"
+      private: yes
+
+  tasks:
+    - name: "find files in the home directory"
+      shell: "ls -lah {{ home }}"
+
+    - name: "create file in joao folder"
+      file:
+        path: "{{ home }}/text.txt"
+        state: touch
+
+    - name: "create the picture folder"
+      file:
+        path: "{{ picture_folder }}"
+        state: directory
+
+    - name: "put password in text.txt"
+      shell: "echo {{ password }} >> {{ home }}/text.txt"

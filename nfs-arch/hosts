@@ -1,0 +1,6 @@
+[nfsserver]
+vm1
+
+[nfsclients]
+vm2
+vm3

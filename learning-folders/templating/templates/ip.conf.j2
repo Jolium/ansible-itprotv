@@ -1,0 +1,12 @@
+##{{ ips | to_json }}
+
+{% for ip in ips %}
+  {{ ip }}
+{% endfor %}
+
+{% if "cheese" in some_data %}
+## some_data is a variable in forfun.yml
+This is true.
+{% else %}
+This is false.
+{% endif %}

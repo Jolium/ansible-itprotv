@@ -1,0 +1,8 @@
+[local]
+localhost ansible_connection=local
+
+[webserver]
+vm1
+
+[dbserver]
+vm2

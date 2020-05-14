@@ -1,0 +1,37 @@
+---
+
+- hosts: devmachines
+  become: yes
+  remote_user: joao
+  roles:
+    - "common"
+
+- hosts: servers
+  become: yes
+  remote_user: joao
+  roles:
+    - "nginx"
+
+- hosts: web-developers
+  become: yes
+  remote_user: joao
+  vars:
+    users:
+     - username: "filipe"
+       shell: "/bin/zsh"
+     - username: "silva"
+       shell: "/bin/bash"
+  roles:
+    - "nodejs"
+    - "frontendteam"
+
+- hosts: backend-developers
+  become: yes
+  remote_user: joao
+  vars:
+    users:
+      - username: "lincho"
+        shell: "/bin/zsh"
+  roles:
+    - "flask"
+    - "backendteam"

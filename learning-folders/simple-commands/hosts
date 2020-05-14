@@ -1,0 +1,9 @@
+[webserver]
+vm1
+
+[dbserver]
+vm2
+
+[nfssever]
+vm1
+vm2

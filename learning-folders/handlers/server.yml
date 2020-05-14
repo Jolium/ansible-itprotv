@@ -1,0 +1,36 @@
+---
+
+- hosts: webserver
+  become: yes
+  handlers:
+    - name: "add new user configuration"
+      file:
+        path: /tmp/user.conf
+        state: touch
+      listen: "update web services"
+    - name: "restart apache2"
+      service:
+        name: apache2
+        state: restarted
+      listen: "update web services"
+  tasks:
+    - name: "install apache2"
+      apt:
+        name: apache2
+        state: present
+    - name: "apache2 webserver is started"
+      service:
+        name: apache2
+        state: started
+    - name: "install libapache2-mod-python"
+      apt:
+        name: libapache2-mod-python
+        state: present
+      notify: 
+        - "restart apache2"
+        - "add new user configuration"
+    - name: "install libapache2-mod-wsgi"
+      apt:
+        name: "libapache2-mod-wsgi"
+        state: present
+      notify: "update web services"

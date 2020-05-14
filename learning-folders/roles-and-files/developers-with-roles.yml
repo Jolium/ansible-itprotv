@@ -1,0 +1,44 @@
+---
+
+- hosts: devmachines
+  become: yes
+  remote_user: joao
+  roles:
+    - "common"
+
+- hosts: servers
+  become: yes
+  remote_user: joao
+#  vars_prompt:
+#    - name: "nginx_http_port"
+#      prompt: "What port do you want to serve the site on?"
+#      private: no
+#    - name: "nginx_server_name"
+#      prompt: "What is the name of the project?"
+#      private: no
+  roles:
+    - "nginx"
+
+- hosts: web-developers
+  become: yes
+  remote_user: joao
+  vars:
+    users:
+     - username: "filipe"
+       shell: "/bin/zsh"
+     - username: "silva"
+       shell: "/bin/bash"
+  roles:
+    - "nodejs"
+    - "frontendteam"
+
+- hosts: backend-developers
+  become: yes
+  remote_user: joao
+  vars:
+    users:
+      - username: "lincho"
+        shell: "/bin/zsh"
+  roles:
+    - "flask"
+    - "backendteam"

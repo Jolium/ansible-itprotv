@@ -1,0 +1,36 @@
+---
+
+- name: "verify that variables are define"
+  fail:
+    msg: "Please check that you have 'nginx_http_port' and 'nginx_server_name' defined"
+  when: nginx_http_port == '' or nginx_server_name == ''
+
+- name: "install nginx"
+  apt:
+    name: nginx
+    state: latest
+
+- name: "start nginx service"
+  service:
+    name: nginx
+    state: started
+
+- name: "add the project directory"
+  synchronize:
+    src: "{{ nginx_server_name }}"
+    dest: "/var/www/"
+
+- name: "update the nginx configuration"
+  template:
+    src: "nginx.conf.j2"
+    dest: "/etc/nginx/sites-available/{{ nginx_server_name }}"
+  notify:
+    - "restart nginx"
+
+- name: "enable the configuration"
+  file:
+    src: "/etc/nginx/sites-available/{{ nginx_server_name }}"
+    dest: "/etc/nginx/sites-enabled/{{ nginx_server_name }}"
+    state: link
+  notify:
+    - "restart nginx"

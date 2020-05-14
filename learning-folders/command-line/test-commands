@@ -1,0 +1,5 @@
+ansible webserver -m apt -a "name=nginx state=present" --become -K
+
+ansible all -m apt -a "name=neovim state=latest" --become -K
+ansible all -m alternatives -a "name=vi path=/usr/bin/nvim priority=60" --become -K
+ansible all -m alternatives -a "name=vim path=/usr/bin/nvim priority=60" --become -K

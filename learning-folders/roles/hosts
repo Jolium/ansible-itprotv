@@ -1,0 +1,12 @@
+[local]
+localhost ansible_connection=local
+
+[web-developers]
+vm1
+
+[backend-developers]
+vm2
+
+[devmachines:children]
+web-developers
+backend-developers

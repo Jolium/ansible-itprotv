@@ -1,0 +1,11 @@
+---
+
+#- name: "add the source url"
+#  yum:
+#    name: "https://rpm.nodesource.com/setup_14.x"
+#    state: present
+
+- name: "install nodejs setup"
+  yum:
+    name: nodejs
+    state: latest

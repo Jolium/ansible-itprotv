@@ -1,0 +1,31 @@
+---
+
+- hosts: devmachines
+  become: yes
+  vars:
+    message_for_admin: "Hello admin, have a nice day!"
+    ips:
+      - "10.0.2.15"
+      - "10.0.2.16"
+    some_data: "cheese"
+    users:
+      - name: Filipe
+        username: filipe
+        shell: bash
+      - name: Silva
+        username: silva
+        shell: zsh
+      - { name: "Lincho", username: "lincho", shell: "fsh" }
+  tasks:
+    - name: "template message for admins"
+      template:
+        src: ./templates/message.txt.j2
+        dest: /tmp/message.txt
+    - name: "set up ip configuration"
+      template:
+        src: ./templates/ip.conf.j2
+        dest: /tmp/ip.conf
+    - name: "set up user configurations"
+      template:
+        src: ./templates/users.xml.j2
+        dest: /tmp/users.xml

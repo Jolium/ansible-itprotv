@@ -1,0 +1,24 @@
+---
+
+- name: "install nginx"
+  apt:
+    name: nginx
+    state: latest
+
+- name: "start nginx service"
+  service:
+    name: nginx
+    state: started
+
+- name: "update the nginx configuration"
+  template:
+    src: "nginx.conf.j2"
+    dest: "/etc/nginx/sites-available/{{ nginx_server_name }}"
+
+- name: "enable the configuration"
+  file:
+    src: "/etc/nginx/sites-available/{{ nginx_server_name }}"
+    dest: "/etc/nginx/sites-enabled/{{ nginx_server_name }}"
+    state: link
+  notify:
+    - "restart nginx"

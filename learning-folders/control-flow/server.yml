@@ -1,0 +1,37 @@
+--- # flow control
+
+- hosts: vms
+  become: yes
+  vars:
+    users:
+      - "Filipe"
+      - "Silva"
+      - "Lincho"
+  vars_files:
+    - "./{{ ansible_os_family }}.variables.yml"
+  handlers:
+    - name: "restart webserver"
+      service: 
+        name: "{{ webserver }}"
+        state: restarted
+  tasks:
+    - name: "install apache2"
+      apt:
+        name: apache2
+        state: present
+      when: ansible_os_family == "Debian"   
+    - name: "install httpd"
+      yum:
+        name: httpd
+        state: present
+      when: ansible_os_family == "RedHat"
+    - name: "remove previous user configuration"
+      file:
+        path: /tmp/users.xml
+        state: absent
+    - name: "setup user configuration"
+      template:
+        src: ./users.xml.j2
+        dest: /tmp/users.xml
+      when: "'Silva'"
+      notify: "restart webserver"

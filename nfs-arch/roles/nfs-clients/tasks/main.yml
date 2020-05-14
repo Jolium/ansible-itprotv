@@ -1,0 +1,25 @@
+---
+
+- name: "install nfs-common"
+  apt:
+    name: nfs-common
+    state: present
+
+- name: "create {{ client_folder }} directory"
+  file:
+    path: "{{ client_folder }}"
+    state: directory
+
+- name: "mount {{ server_folder }} from nfs server to {{ client_folder }}"
+  mount:
+    path: "/{{ client_folder }}"
+    src: "{{ server_ip }}:{{ server_folder }}"
+    state: mounted
+    fstype: nfs
+
+- name: "add the test file"
+  file:
+    path: "{{ client_folder }}/test.file"
+    state: touch
+    owner: "{{ username }}"
+    group: "{{ username }}"
